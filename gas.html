@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Free Gas Simulator">
+  <meta name="keywords" content="HTML, CSS, JavaScript">
+  <meta name="author" content="Gregorio Boccaccini">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Gas-simulator</title>
+
+  <link rel="stylesheet" type="text/css" href="gas.css">
+
+  <img src="canvasBackground.jpg" style="display: none;" id="canvImg">
+</head>
+<body style="text-align: center; line-height: 28px;">
+  <h1 id="title">
+    Gas-simulator
+    <sup style="font-size: 24px;">&#169</sup> <br>
+    <span id="subtitle">by: <a id="me" href="https://github.com/gregbrocca" target="_blank"> Gregorio Boccaccini </a></span>
+  </h1>
+  
+  <canvas id="myCanvas" width="1230%" height="370" style="border: 3px solid black; padding: none;"> </canvas>
+  <canvas width="1230%" height="10px" id="textCanvas_x" style="visibility: hidden; padding: none;"> </canvas>
+  <script src="ax_x.js"></script>
+
+  <p>
+    <img style="float: left; margin-left: 347px;" src="cold.png" height="30px" id="cold">
+    <img style="float: right; margin-right: 342px;" src="hot.png" height="30px" id="hot">
+    <div class="slidecontainer">
+      <input style="float: center;" type="range" min="50" max="2050" value="450" step="100" id="temp" class="slider">
+    </div>
+    <div style="clear:both;"></div>
+    <span style="font-weight: 800; font-size: 22px; text-shadow: 2px 2px 4px black;">T = </span>
+    <span style="text-shadow: 2px 2px 4px black;" id="displayTemp"></span>
+    <span style="font-weight: 800; font-size: 20px; text-shadow: 2px 2px 4px black;"> K </span>
+  </p>
+
+  <div style="float: left; margin-left: 20px;">
+    <span id="dropDownP" style="font-size: 15px; text-shadow: 2px 2px 4px black;"> &#9658; </span>
+    <span style=" font-weight: bold; text-shadow: 2px 2px 4px black;"> Not sure about what's going on? Find out more... </span>
+    <br> <br>
+    <span id="dropDownC1" style="font-size: 14px; text-shadow: 2px 2px 4px black; display: none;"> &#9658; </span>
+    <span id="dropDownP1" style="display: none; font-style: oblique; font-weight: 600; text-shadow: 2px 2px 4px black;">
+      about molecular speeds distribution
+    </span> <br>
+    <span style="opacity: 0.9; font-style: oblique; display: none;" id="expMB">
+      the simulation above represents a gas behavior from a <br>
+      molecular P.O.V. The speed of each molecule responds to <br>
+      Maxwell-Boltzmann's probability distribution; this is <br>
+      a quite complicated probability-density function that, given <br>
+      some parameteres from a sample of gas(number of molecules, <br>
+      temperature, mass of each particle and a speed interval) <br>
+      returns the number of molecules within that speed range. <br>
+      By clicking on the 'Display M-B histogram' button on top, <br>
+      molecules with similar speeds will pile up, and you will <br>
+      observe exactly the Maxwell-Boltzmann histogram formed! <br>
+      The equation regulating this process is: <br> <br>
+      <img style="border: 1px dashed black; padding: 5px;" src="https://latex.codecogs.com/svg.latex?dN=4\pi&space;N_{0}(\frac{m}{2\pi&space;k_{B}T})^{\frac{3}{2}}v^{2}e^{-\frac{m}{2k_{B}T}v^{2}}dV{\color{DarkOrange}&space;{\color{Red}&space;}}" title="dN=4\pi N_{0}(\frac{m}{2\pi k_{B}T})^{\frac{3}{2}}v^{2}e^{-\frac{m}{2k_{B}T}v^{2}}dV{\color{DarkOrange} {\color{Red} }}" /> <br> <br>
+      As we can see from this equation, where dN is the number <br>
+      of molecules with a speed magnitude between v and v+dV, <br>
+      by changing the temperature, gas particles will have a different <br>
+      distribution of velocity(see how this reflects on the morphology <br>
+      of the M-B histogram by moving the temperature slider in the <br>
+      simulation); the higher the temperature, the higher the average <br>
+      molecular speed and the higher the probability to "pick" a <br>
+      particle with an high speed magnitude. <br>
+    </span> <br>
+
+    <span id="dropDownC2" style="font-size: 14px; text-shadow: 2px 2px 4px black; display: none;"> &#9658; </span>
+    <span id="dropDownP2" style="display: none; font-style: oblique; font-weight: 600; text-shadow: 2px 2px 4px black;">
+      about the simulator itself
+    </span> <br>
+    <span style="opacity: 0.9; font-style: oblique; display: none;" id="expSIM">
+      thanks to this simulator you will have the possibility to <br>
+      enhance physical gases comprehension.<br>
+      Understanding "tiny-scaled" concepts is not that easy <br>
+      without a visual feedback, and <br>
+      the one above is a close approximation on how a sample of <br>
+      gas reacts to changes in temperature, and how its behavior <br>
+      is regulated from math equations...<strong> for the sake of physics! </strong> <br>
+      Just make sure to play around, to change the temperature and <br>
+      try to predict how the gas and its M-B distribution will 
+      respond. <br>
+      <br>
+      <br>
+    </span>
+  </div>
+
+  <div style="float: left; margin-left: 175px;">
+    <input style="margin-bottom: 10px;" type="button" value="Display M-B histogram" class="button1" onclick="drawChart_bool()">
+    <br>
+    <span style="font-size: 16px; text-shadow: 2px 2px 4px black;">
+      <strong style="font-size: 18px;">[P]</strong>: to pause/unpause
+    </span>
+  </div>
+
+  <div style="float: right; margin-right: 70px;">
+    <span id="dropDownD" style="font-size: 15px; text-shadow: 2px 2px 4px white; color: black;"> &#9658; </span>
+    <span style=" font-weight: bold; text-shadow: 2px 2px 4px white; color: black;">
+      More data
+    </span> <br> <br>
+
+    <span id="moreData" style="display: none; opacity: 0.9; font-style: oblique; color: black;">
+      Number of molecules in the gas(N<sub>M</sub>) = <strong>400</strong> <br>
+      Molecular mass(m<sub>m</sub>) = <strong>2.66&middot10<sup>-26</sup></strong>kg <br>
+      Boltzmann constant(k<sub>B</sub>) = <strong>1.38&middot10<sup>-23</sup></strong>
+      m<sup>2</sup>&middotkg&middots<sup>-2</sup>&middotK<sup>-1</sup>
+    </span>
+  </div>
+
+  <script src="gas.js"></script>
+
+  <div style="clear:both;"></div>
+</body>
+</html>
